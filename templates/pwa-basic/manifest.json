@@ -1,0 +1,6 @@
+{
+  "name": "AI Generated App",
+  "short_name": "AIApp",
+  "start_url": ".",
+  "display": "standalone"
+}
