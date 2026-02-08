@@ -3,100 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI App Generator</title>
+<title>Personal AI App Generator</title>
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: #e5e7eb;
-    padding: 16px;
-  }
+body {
+  font-family: system-ui, Arial;
+  background: #020617;
+  color: #e5e7eb;
+  padding: 16px;
+}
 
-  h2, h3 {
-    margin-top: 16px;
-  }
+h2 {
+  margin-bottom: 6px;
+}
 
-  textarea, select, button {
-    width: 100%;
-    margin-top: 10px;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: none;
-  }
+textarea, select, button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #020617;
+  color: #f8fafc;
+}
 
-  textarea {
-    min-height: 120px;
-    background: #020617;
-    color: #f8fafc;
-    border: 1px solid #334155;
-  }
+textarea {
+  min-height: 130px;
+}
 
-  textarea::placeholder {
-    color: #94a3b8;
-  }
+textarea::placeholder {
+  color: #94a3b8;
+}
 
-  select {
-    background: #020617;
-    color: #f8fafc;
-    border: 1px solid #334155;
-  }
+button {
+  background: #2563eb;
+  border: none;
+  font-weight: bold;
+}
 
-  label {
-    display: block;
-    margin: 6px 0;
-    font-size: 15px;
-  }
+button:active {
+  transform: scale(0.97);
+}
 
-  button {
-    background: #2563eb;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-  }
+label {
+  display: block;
+  margin-top: 6px;
+}
 
-  button:active {
-    transform: scale(0.98);
-  }
+pre {
+  background: #020617;
+  border: 1px solid #334155;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
 
-  pre {
-    background: #020617;
-    border: 1px solid #334155;
-    padding: 12px;
-    margin-top: 16px;
-    border-radius: 8px;
-    overflow-x: auto;
-    font-size: 13px;
-  }
+/* AI STATUS */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: red;
+}
+
 </style>
 </head>
 
 <body>
 
 <h2>🔥 Personal AI App Generator</h2>
+<p>Online • GitHub • No PC</p>
 
-<textarea id="idea"
-  placeholder="Example: A lo-fi clock app with AI background music, offline mode, auto theme change by time..."></textarea>
+<div class="status">
+  <div id="aiDot" class="dot"></div>
+  <span id="aiText">AI idle</span>
+</div>
 
-<h3>App Type</h3>
+<textarea id="idea" placeholder="Describe your app or game idea here..."></textarea>
+
 <select id="type">
   <option value="utility">Utility App</option>
   <option value="game">Game</option>
 </select>
 
-<h3>Core Features</h3>
 <label><input type="checkbox" value="Offline support"> Offline support</label>
 <label><input type="checkbox" value="Dark mode"> Dark mode</label>
-<label><input type="checkbox" value="Music playback"> Music playback</label>
-<label><input type="checkbox" value="Ambient sound AI"> Ambient sound AI</label>
-<label><input type="checkbox" value="Dynamic backgrounds"> Dynamic backgrounds</label>
-<label><input type="checkbox" value="Notifications"> Notifications</label>
-<label><input type="checkbox" value="Auto updates"> Auto updates</label>
-<label><input type="checkbox" value="Rollback support"> Rollback support</label>
+<label><input type="checkbox" value="Dynamic background"> Dynamic background</label>
+<label><input type="checkbox" value="Music & ambient sound"> Music & ambient sound</label>
+<label><input type="checkbox" value="Auto update + rollback"> Auto update + rollback</label>
 <label><input type="checkbox" value="Ads & IAP ready"> Ads & IAP ready</label>
 
-<button onclick="generate()">🚀 Generate App Blueprint</button>
+<button onclick="generate()">🚀 Generate Blueprint</button>
 
 <pre id="output">Waiting for input…</pre>
 
