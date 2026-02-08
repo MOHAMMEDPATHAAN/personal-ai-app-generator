@@ -1,24 +1,81 @@
 export async function POST(req) {
-  const body = await req.json();
-  const { idea, type } = body;
+  const { idea, type, features } = await req.json();
 
-  // Mock AI logic (safe for now)
-  const features = [];
+  // ---- AI CALLS ----
+  async function callOpenAI(prompt) {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gpt-4.1-mini",
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content || "";
+  }
 
-  if (idea.toLowerCase().includes("offline")) {
-    features.push("Offline support");
+  async function callGemini(prompt) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      }
+    );
+    const data = await res.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
   }
-  if (idea.toLowerCase().includes("music")) {
-    features.push("Music playback");
+
+  async function callGroq(prompt) {
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "mixtral-8x7b-32768",
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content || "";
   }
-  if (idea.toLowerCase().includes("dark")) {
-    features.push("Dark mode");
-  }
+
+  // ---- MULTI-AI VOTING ----
+  const prompt = `
+  Convert this app idea into a SAFE Play Store feature list.
+  App idea: ${idea}
+  User selected features: ${features.join(", ")}
+  Only return feature names.
+  `;
+
+  const [openai, gemini, groq] = await Promise.all([
+    callOpenAI(prompt),
+    callGemini(prompt),
+    callGroq(prompt)
+  ]);
+
+  // ---- SIMPLE MERGE ----
+  const merged = `${openai}\n${gemini}\n${groq}`;
+  const finalFeatures = [...new Set(
+    merged
+      .split(/[\n,]/)
+      .map(f => f.trim())
+      .filter(Boolean)
+  )];
 
   return new Response(JSON.stringify({
-    status: "App blueprint generated",
+    status: "✅ AI App Blueprint Ready",
     type,
-    features,
+    features: finalFeatures,
     template: "pwa-basic"
   }), {
     headers: { "Content-Type": "application/json" }
