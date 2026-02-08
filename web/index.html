@@ -4,19 +4,32 @@
   <title>Personal AI App Generator</title>
 </head>
 <body>
-  <h2>AI App Generator</h2>
+<h2>Personal AI App Generator</h2>
 
-  <textarea id="idea" placeholder="Describe your app idea"></textarea><br><br>
+<textarea id="idea" placeholder="Describe your app idea"></textarea>
 
-  <select id="type">
-    <option value="utility">Utility</option>
-    <option value="game">Game</option>
-  </select><br><br>
+<h3>Select App Type</h3>
+<select id="type">
+  <option value="utility">Utility</option>
+  <option value="game">Game</option>
+</select>
 
-  <button onclick="generate()">Generate App</button>
+<h3>Select Features</h3>
 
-  <pre id="output"></pre>
+<label><input type="checkbox" value="Offline support"> Offline support</label><br>
+<label><input type="checkbox" value="Dark mode"> Dark mode</label><br>
+<label><input type="checkbox" value="Music playback"> Music playback</label><br>
+<label><input type="checkbox" value="Notifications"> Notifications</label><br>
+<label><input type="checkbox" value="Local storage"> Local storage</label><br>
+<label><input type="checkbox" value="Update system"> Update system</label><br>
+<label><input type="checkbox" value="Rollback support"> Rollback support</label><br>
 
-  <script src="app.js"></script>
+<br>
+<button onclick="generate()">Generate App</button>
+
+<pre id="output"></pre>
+
+<script src="app.js"></script>
+
 </body>
 </html>
