@@ -2,11 +2,16 @@ async function generate() {
   const idea = document.getElementById("idea").value;
   const type = document.getElementById("type").value;
 
-  document.getElementById("output").innerText = "⏳ Generating...";
+  const features = Array.from(
+    document.querySelectorAll("input[type=checkbox]:checked")
+  ).map(cb => cb.value);
+
+  document.getElementById("output").innerText = "⏳ AI is thinking...";
 
   const res = await fetch("../api/generate.js", {
     method: "POST",
-    body: JSON.stringify({ idea, type })
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idea, type, features })
   });
 
   const data = await res.json();
