@@ -81,3 +81,32 @@ export async function POST(req) {
     headers: { "Content-Type": "application/json" }
   });
 }
+
+const categorized = {
+  core: [],
+  ui: [],
+  system: [],
+  monetization: []
+};
+
+finalFeatures.forEach(f => {
+  if (/offline|storage|update|rollback/i.test(f)) categorized.system.push(f);
+  else if (/dark|background|theme|ui/i.test(f)) categorized.ui.push(f);
+  else if (/ads|iap|purchase/i.test(f)) categorized.monetization.push(f);
+  else categorized.core.push(f);
+});
+
+return new Response(JSON.stringify({
+  status: "✅ App Blueprint Generated",
+  appType: type,
+  features: categorized,
+  nextSteps: [
+    "Generate full app code",
+    "Enable PWA + APK export",
+    "Add versioning & updates",
+    "Prepare Play Store listing"
+  ]
+}), {
+  headers: { "Content-Type": "application/json" }
+});
+
