@@ -104,7 +104,23 @@ pre {
 
 <button onclick="generate()">🚀 Generate Blueprint</button>
 
-<pre id="output">Waiting for input…</pre>
+<pre id="output"><div style="margin-top:14px;">
+  <strong>AI Response</strong>
+  <div id="aiResponse"
+       style="margin-top:6px;
+              padding:10px;
+              border:1px solid #334155;
+              border-radius:8px;
+              background:#020617;
+              font-size:14px;">
+    AI standing by…
+  </div>
+</div>
+
+<button onclick="rollback()" style="margin-top:12px;background:#475569;">
+  ⏪ Rollback to previous version
+</button>
+ Waiting for input…</pre>
 
 <script src="app.js"></script>
 </body>
