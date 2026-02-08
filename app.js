@@ -1,25 +1,36 @@
+function setAIStatus(color, text) {
+  const dot = document.getElementById("aiDot");
+  const label = document.getElementById("aiText");
+  dot.style.background = color;
+  label.innerText = text;
+}
+
 async function generate() {
   const idea = document.getElementById("idea").value.trim();
-  const type = document.getElementById("type").value;
-
   if (!idea) {
-    alert("Please describe your app idea");
+    alert("Please enter your idea");
     return;
   }
 
-  const features = Array.from(
-    document.querySelectorAll("input[type=checkbox]:checked")
-  ).map(cb => cb.value);
+  const type = document.getElementById("type").value;
+  const features = [...document.querySelectorAll("input:checked")].map(i => i.value);
 
-  const output = document.getElementById("output");
-  output.innerText = "🧠 AI engines working...";
+  setAIStatus("orange", "AI thinking...");
+  document.getElementById("output").innerText = "Generating…";
 
-  const res = await fetch("../api/generate.js", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ idea, type, features })
-  });
+  try {
+    const res = await fetch("api/generate.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idea, type, features })
+    });
 
-  const data = await res.json();
-  output.innerText = JSON.stringify(data, null, 2);
+    const data = await res.json();
+    document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+    setAIStatus("green", "AI active");
+
+  } catch (e) {
+    document.getElementById("output").innerText = "AI error";
+    setAIStatus("red", "AI offline");
+  }
 }
